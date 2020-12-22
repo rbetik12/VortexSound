@@ -55,11 +55,13 @@ ALenum GetOpenALFormat(uint8_t channels) {
 }
 
 void ALnssSleep(unsigned long nsec) {
+#ifdef UNIX
     struct timespec ts, rem;
-    ts.tv_sec = (time_t) (nsec / 1000000000ul);
-    ts.tv_nsec = (long) (nsec % 1000000000ul);
+    ts.tv_sec = (time_t)(nsec / 1000000000ul);
+    ts.tv_nsec = (long)(nsec % 1000000000ul);
     while (nanosleep(&ts, &rem) == -1 && errno == EINTR)
         ts = rem;
+#endif
 }
 
 void VxSndInit() {
